@@ -4,4 +4,4 @@
 
   * **Overall Progress:** 17.86%
 
-This is an unofficial port of RoValra to firefox! This is NOT managaged by Valra
+This is an unofficial port of RoValra to firefox! This is NOT managed by Valra
