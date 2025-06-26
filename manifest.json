@@ -3,24 +3,27 @@
   "name": "RoValra - Roblox Improved",
   "version": "2.2",
   "description": "An extension aiming to provide features that other Roblox extensions pay wall!",
-  "content_scripts": [    {
+  "content_scripts": [
+    {
       "matches": [
         "*://*.roblox.com/*"
       ],
-      "js": ["content.js", "catalog/hiddencatalog.js","misc/pages.js","settings.js"],
+      "js": ["content.js", "catalog/hiddencatalog.js", "misc/pages.js", "settings.js"],
       "run_at": "document_start",
       "all_frames": true
-    },    {
-    "matches": [
+    },
+    {
+      "matches": [
         "*://*.roblox.com/*/games/*",
         "*://*.roblox.com/games/*"
       ],
-      "js": ["Games/serverid.js",  "Games/serverlistener.js",  "Games/botDetector.js" ],
+      "js": ["Games/serverid.js", "Games/serverlistener.js", "Games/botDetector.js"],
       "run_at": "document_start",
       "all_frames": true
-    },    {
+    },
+    {
       "matches": [
-       "*://*.roblox.com/*/games/*",
+        "*://*.roblox.com/*/games/*",
         "*://*.roblox.com/games/*"
       ],
       "js": ["Games/sniper.js"],
@@ -28,7 +31,7 @@
     },
     {
       "matches": [
-         "*://*.roblox.com/*/games/*",
+        "*://*.roblox.com/*/games/*",
         "*://*.roblox.com/games/*"
       ],
       "js": ["Games/Regions_content.js", "Games/RegionPlayButton.js", "Games/Regions_contentSimple.js"],
@@ -45,14 +48,15 @@
     },
     {
       "matches": [
-         "*://*.roblox.com/*/users/*",
+        "*://*.roblox.com/*/users/*",
         "*://*.roblox.com/users/*"
       ],
       "js": ["misc/ItemChecker.js"],
       "run_at": "document_end",
       "all_frames": true
     }
-  ],  "permissions": [
+  ],
+  "permissions": [
     "declarativeNetRequest",
     "storage",
     "tabs",
@@ -65,7 +69,7 @@
     "https://users.roblox.com/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "declarative_net_request": {
     "rule_resources": [
@@ -74,48 +78,48 @@
         "enabled": true,
         "path": "Rules/rules.json"
       },
-       {
+      {
         "id": "ruleset_2",
         "enabled": false,
         "path": "Rules/regionRules.json"
       }
     ]
-  },  "web_accessible_resources": [
-      {
-          "resources": [
-        
-              "HiddenGames/group_games.js",
-              "HiddenGames/user_games.js",
-              "misc/userSniper.js",
-              "misc/item_sales_content.js",
-              "misc/style.js",
-              "misc/utils.js",
-              "Games/Regions_content.js",
-              "Games/Subplaces.js",
-              "data/ServerList.json",
-              "data/items.json",
-              "data/countries.json",
-              "Avatar/R6Warning.js",
-              "Avatar/R6Fix.js",
-              "settings.js",
-              "Assets/icon-128.png",
-              "Games/invite.js",
-              "Games/sniper.js",
-              "misc/ItemChecker.js",
-              "catalog/hiddencatalog.js",
-              "Games/Regions_contentSimple.js",
-              "misc/pendingRobux.js",
-              "misc/pendingRobuxTrans.js",
-              "Games/botDetector.js",
-              "Games/inject.js",
-              "Games/invite.js"
-          ],
-          "matches": [
-              "https://www.roblox.com/*"
-          ]
-      }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "HiddenGames/group_games.js",
+        "HiddenGames/user_games.js",
+        "misc/userSniper.js",
+        "misc/item_sales_content.js",
+        "misc/style.js",
+        "misc/utils.js",
+        "Games/Regions_content.js",
+        "Games/Subplaces.js",
+        "data/ServerList.json",
+        "data/items.json",
+        "data/countries.json",
+        "Avatar/R6Warning.js",
+        "Avatar/R6Fix.js",
+        "settings.js",
+        "Assets/icon-128.png",
+        "Games/invite.js",
+        "Games/sniper.js",
+        "misc/ItemChecker.js",
+        "catalog/hiddencatalog.js",
+        "Games/Regions_contentSimple.js",
+        "misc/pendingRobux.js",
+        "misc/pendingRobuxTrans.js",
+        "Games/botDetector.js",
+        "Games/inject.js",
+        "Games/invite.js"
+      ],
+      "matches": [
+        "https://www.roblox.com/*"
+      ]
+    }
   ],
-    "action": {
+  "action": {
     "default_icon": {
       "16": "Assets/icon-16.png",
       "48": "Assets/icon-48.png",

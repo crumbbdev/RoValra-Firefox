@@ -1,3 +1,5 @@
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+
 let trackedServerRequests = [];
 let loadedScripts = [];
 let roValraLoaded = false;
@@ -53,30 +55,30 @@ const addPreloadHints = () => {
     ];
 
     preloadScripts.forEach(src => {
-        const existingPreload = document.querySelector(`link[rel="preload"][href="${chrome.runtime.getURL(src)}"]`);
+        const existingPreload = document.querySelector(`link[rel="preload"][href="${ext.runtime.getURL(src)}"]`);
         if (existingPreload) return;
 
         const link = document.createElement('link');
         link.rel = 'preload';
         link.as = 'script';
-        link.href = chrome.runtime.getURL(src);
+        link.href = ext.runtime.getURL(src);
         document.head.appendChild(link);
     });
 
     modulePreloadScripts.forEach(src => {
-        const existingPreload = document.querySelector(`link[rel="preload"][href="${chrome.runtime.getURL(src)}"]`);
+        const existingPreload = document.querySelector(`link[rel="preload"][href="${ext.runtime.getURL(src)}"]`);
         if (existingPreload) return;
 
         const link = document.createElement('link');
         link.rel = 'modulepreload';
-        link.href = chrome.runtime.getURL(src);
+        link.href = ext.runtime.getURL(src);
         document.head.appendChild(link);
     });
 };
 
 const loadScript = async (src, dataAttributes = {}) => {
     const startTime = performance.now();
-    const scriptUrl = chrome.runtime.getURL(src);
+    const scriptUrl = ext.runtime.getURL(src);
     
     if (document.querySelector(`script[src="${scriptUrl}"]`)) {
         return Promise.resolve();
@@ -200,7 +202,7 @@ function getPlaceIdFromUrl() {
     };
 
     const [settings, theme] = await Promise.all([
-        chrome.storage.local.get(settingsToLoad).then(savedSettings => ({
+        ext.storage.local.get(settingsToLoad).then(savedSettings => ({
             ...defaultSettings,
             ...savedSettings
         })),
@@ -218,7 +220,7 @@ function getPlaceIdFromUrl() {
     }
     
     if (Object.keys(settingsToUpdate).length > 0) {
-        chrome.storage.local.set(settingsToUpdate).catch(error => {
+        ext.storage.local.set(settingsToUpdate).catch(error => {
             console.error("Error saving settings:", error);
         });
     }
@@ -229,7 +231,7 @@ function getPlaceIdFromUrl() {
         case 'CATALOG':
         case 'BUNDLES':
             if (settings.itemSalesEnabled) {
-                scriptPromises.push(loadScript('misc/item_sales_content.js', { itemsUrl: chrome.runtime.getURL('data/items.json') }));
+                scriptPromises.push(loadScript('misc/item_sales_content.js', { itemsUrl: ext.runtime.getURL('data/items.json') }));
             }
             break;
         case 'COMMUNITIES':
