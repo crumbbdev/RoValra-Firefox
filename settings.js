@@ -1,3 +1,6 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+
 const REGIONS = {
     "AUTO": { city: "Nothing Selected", state: null, country: null },
     "SG": { latitude: 1.3521, longitude: 103.8198, city: "Singapore", state: null, country: "Singapore" },
@@ -1098,7 +1101,7 @@ function addCustomButton() {
     newButtonSpan.style.fontSize = '12px'
 
     const logo = document.createElement('img');
-    logo.src = chrome.runtime.getURL("Assets/icon-128.png");
+    logo.src = ext.runtime.getURL("Assets/icon-128.png");
     logo.style.width = '15px';
     logo.style.height = '15px';
     logo.style.marginRight = '5px';
@@ -1183,7 +1186,7 @@ function addPopoverButton() {
     newButtonSpan.style.marginLeft = '-1px';
 
     const logo = document.createElement('img');
-    logo.src = chrome.runtime.getURL("Assets/icon-128.png");
+    logo.src = ext.runtime.getURL("Assets/icon-128.png");
     logo.style.width = '17px';
     logo.style.height = '17px';
     logo.style.marginRight = '5px';
@@ -1265,10 +1268,10 @@ const loadSettings = async () => {
             pendingrobuxtrans: true,
         };
 
-        chrome.storage.local.get(defaultSettings, (settings) => {
-            if (chrome.runtime.lastError) {
-                console.error('Failed to load settings:', chrome.runtime.lastError);
-                reject(chrome.runtime.lastError);
+        ext.storage.local.get(defaultSettings, (settings) => {
+            if (ext.runtime.lastError) {
+                console.error('Failed to load settings:', ext.runtime.lastError);
+                reject(ext.runtime.lastError);
             } else {
                 resolve(settings);
             }
@@ -1290,10 +1293,10 @@ const handleSaveSettings = async (settingName, value) => {
         }
 
         return new Promise((resolve, reject) => {
-            chrome.storage.local.set(settings, () => {
-                if (chrome.runtime.lastError) {
-                    console.error('Failed to save setting:', settingName, chrome.runtime.lastError);
-                    reject(chrome.runtime.lastError);
+            ext.storage.local.set(settings, () => {
+                if (ext.runtime.lastError) {
+                    console.error('Failed to save setting:', settingName, ext.runtime.lastError);
+                    reject(ext.runtime.lastError);
                 } else {
                     resolve();
                 }
@@ -1336,7 +1339,7 @@ const initSettings = async (settingsContent) => {
                                     previewElement.style.display = 'block';
                                     if (clearButton) clearButton.style.display = 'inline-block';
                                 } else if (currentRevertLogoValue === 'CUSTOM') { 
-                                    previewElement.src = chrome.runtime.getURL("Assets/icon-128.png");
+                                    previewElement.src = ext.runtime.getURL("Assets/icon-128.png");
                                     previewElement.style.display = 'block';
                                     if (clearButton) clearButton.style.display = 'none'; 
                                 } else { 
@@ -1947,22 +1950,24 @@ const buttonData = [
     {
         text: "Info", content: `
         <div style="padding: 8px;">
-        <h2 style="margin-bottom: 10px;">RoValra Infomation!</h2>
+        <h2 style="margin-bottom: 10px;">RoValra-Firefox Infomation!</h2>
+        <strong style="">This is an unofficial port of RoValra to firefox, If you like this extension please consider <a href="https://github.com/crumbbdev/RoValra-Firefox" target="_blank" class="rovalra-review-link">starring the Github Repo</a>.</strong>
         <p style="">RoValra is an extension that's trying to make basic quality of life features free and accessible to everyone, by making everything completely open-source.</p>
         <div style="margin-top: 5px;">
             <p style="">This is possible by running almost everything locally.</p>
             <div style="margin-top: 5px;">
-            <p style="">If you have any feature suggestions please let me know in my Discord server or via GitHub</p>
+            <p style="">If you have any feature suggestions please request them in Valras' Discord server or via Github</p>
             <div style="margin-top: 5px;">
             <p style="">If you like this extension please consider <a href="https://chromewebstore.google.com/detail/rovalra-roblox-improved/njcickgebhnpgmoodjdgohkclfplejli/reviews" target="_blank" class="rovalra-review-link">leaving a review</a>, it helps a lot ❤️</p>
             </div>
         <div style="margin-top: 10px;">
                 <a href="https://discord.gg/GHd5cSKJRk" target="_blank" class="rovalra-discord-link">Discord Server</a>
                 <a href="https://github.com/NotValra/RoValra" target="_blank" class="rovalra-github-link">
-                Github Repo
-                <img src="${chrome.runtime.getURL("Assets/icon-128.png")}" style="width: 20px; height: 20px; margin-left: 5px; vertical-align: middle;" />
+                RoValra Github Repo
+                <img src="${ext.runtime.getURL("Assets/icon-128.png")}" style="width: 20px; height: 20px; margin-left: 5px; vertical-align: middle;" />
                 </a>
                 <a href="https://www.roblox.com/games/9676908657/Gamepasses#!/store" target="_blank" class="rovalra-roblox-link">Support Me on Roblox</a>
+                <a href="https://github.com/crumbbdev/RoValra-Firefox" target="_blank" class="rovalra-github-link">RoValra-Firefox Github</a>
         </div>
     </div>
     `},
@@ -2387,4 +2392,4 @@ function setupThemeMutationObserver() {
     
     return themeObserver;
 }
-
+})();
