@@ -1,5 +1,7 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
 
-chrome.storage.local.get({ ServerdataEnabled: false}, function(settings) { 
+ext.storage.local.get({ ServerdataEnabled: false}, function(settings) { 
     if (settings.ServerdataEnabled) {
 (function() {
     
@@ -147,4 +149,4 @@ sendToLocalAPI(placeId, serverIds, 'xhr');
     
 })();
     }
-});
+})})();

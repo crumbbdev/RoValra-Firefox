@@ -1,4 +1,5 @@
 (function() {
+    const ext = (typeof browser !== "undefined") ? browser : chrome;
     const newClassName = "icon-logo-r-95";
     const originalSelector = "span.app-icon-bluebg.app-icon-windows.app-icon-size-96";
     const newSelector = "div.MuiGrid-root div.app-icon-bluebg.app-icon-windows";
@@ -124,7 +125,7 @@
     }
 
     function initRevertLogo() {
-        chrome.storage.local.get({ revertLogo: 'NEW', customLogoData: null }, function(settings) {
+        ext.storage.local.get({ revertLogo: 'NEW', customLogoData: null }, function(settings) {
             const revertLogoSetting = settings.revertLogo;
             const customLogoData = settings.customLogoData;
 
@@ -145,7 +146,7 @@
                 if (customLogoData) {
                     logoToApply = customLogoData;
                 } else {
-                    logoToApply = chrome.runtime.getURL("Assets/icon-128.png");
+                    logoToApply = ext.runtime.getURL("Assets/icon-128.png");
                 }
 
                 if (logoToApply) {

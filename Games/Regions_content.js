@@ -1,8 +1,11 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-chrome.storage.local.get({
+ext.storage.local.get({
     regionSelectorEnabled: false,
     regionSimpleUi: false
 }, function(settings) {
@@ -169,11 +172,11 @@ chrome.storage.local.get({
                 };
             }
         }
-        chrome.storage.local.set({
+        ext.storage.local.set({
             config: JSON.stringify(config)
         });
         started = localStorage.getItem('started');
-        if (started !== undefined) chrome.storage.local.set({
+        if (started !== undefined) ext.storage.local.set({
             started: started
         });
     }
@@ -181,7 +184,7 @@ chrome.storage.local.get({
 
     async function updateRegionSelectorState() {
         const settings = await new Promise((resolve) => {
-            chrome.storage.local.get({
+            ext.storage.local.get({
                 regionSelectorEnabled: false,
                 showServerListOverlay: true,
             }, (result) => {
@@ -504,7 +507,7 @@ chrome.storage.local.get({
 
     (async () => {
         try {
-            const response = await fetch(chrome.runtime.getURL("data/ServerList.json"));
+            const response = await fetch(ext.runtime.getURL("data/ServerList.json"));
             const serverListData = await response.json();
 
             if (Array.isArray(serverListData)) {
@@ -516,7 +519,7 @@ chrome.storage.local.get({
             serverIpMap = {};
         }
 
-        countryData = await fetch(chrome.runtime.getURL("data/countries.json"))
+        countryData = await fetch(ext.runtime.getURL("data/countries.json"))
             .then(response => response.json())
             .then(data => {
                 preProcessedCountryData = preprocessCountryData(data);
@@ -907,7 +910,7 @@ chrome.storage.local.get({
                       })();
                     `;
 
-            chrome.runtime.sendMessage(
+            ext.runtime.sendMessage(
                 { action: "injectScript", codeToInject: codeToInject },
                 (response) => {
                     if (response && response.success) {
@@ -932,7 +935,7 @@ chrome.storage.local.get({
               })();
             `;
 
-        chrome.runtime.sendMessage(
+        ext.runtime.sendMessage(
             { action: "injectScript", codeToInject: codeToInject },
             (response) => {
                 if (response && response.success) {
@@ -1564,7 +1567,7 @@ chrome.storage.local.get({
         explanationContainer.style.marginBottom = '10px';
 
         const iconImage = document.createElement('img');
-        iconImage.src = chrome.runtime.getURL("Assets/icon-128.png");
+        iconImage.src = ext.runtime.getURL("Assets/icon-128.png");
         iconImage.alt = "RoValra Icon";
         iconImage.style.width = '20px';
         iconImage.style.height = '20px';
@@ -2499,4 +2502,4 @@ chrome.storage.local.get({
     })();
 
     }
-}});
+}})})();

@@ -1,10 +1,13 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
             let csrfToken = null;
 
-chrome.storage.local.get({ regionSelectorEnabled: false, showServerListOverlay: true, regionSimpleUi: false  }, function(settings) { 
+ext.storage.local.get({ regionSelectorEnabled: false, showServerListOverlay: true, regionSimpleUi: false  }, function(settings) { 
     if (settings.regionSelectorEnabled && !settings.regionSimpleUi) {
         if (window.location.pathname.includes('/games/')) {
             const url = window.location.href;
@@ -170,7 +173,7 @@ const RATE_LIMIT_CHECK_INTERVAL_MS = 1000;
 
             async function updateRegionSelectorState() {
                 const settings = await new Promise((resolve) => {
-                    chrome.storage.local.get({
+                    ext.storage.local.get({
                         regionSelectorEnabled: true, 
                         showServerListOverlay: true,
                     }, (result) => {
@@ -449,8 +452,8 @@ function stopRateLimitCheck() {
                      let serverListJsonText;
                      if (typeof GM_getResourceText === 'function') {
                         serverListJsonText = GM_getResourceText("serverListJSON");
-                     } else if (chrome && chrome.runtime && chrome.runtime.getURL) {
-                         const url = chrome.runtime.getURL('data/ServerList.json'); 
+                     } else if (chrome && ext.runtime && ext.runtime.getURL) {
+                         const url = ext.runtime.getURL('data/ServerList.json'); 
                          const response = await fetch(url);
                          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                          serverListJsonText = await response.text();
@@ -1084,7 +1087,7 @@ function stopRateLimitCheck() {
                       })();
                     `;
         
-                chrome.runtime.sendMessage(
+                ext.runtime.sendMessage(
                     { action: "injectScript", codeToInject: codeToInject },
                     (response) => {
                         if (response && response.success) {
@@ -1322,7 +1325,7 @@ async function updatePopup(retries = 5) {
     `;
     const iconImage = document.createElement('img');
     try {
-        iconImage.src = (typeof GM_getResourceURL === 'function') ? GM_getResourceURL("icon128") : chrome.runtime.getURL("Assets/icon-128.png");
+        iconImage.src = (typeof GM_getResourceURL === 'function') ? GM_getResourceURL("icon128") : ext.runtime.getURL("Assets/icon-128.png");
     } catch (e) { iconImage.src = 'Assets/icon-128.png'; }
     iconImage.alt = "RoValra Icon";
     iconImage.style.cssText = 'width: 20px; height: 20px; margin-right: 8px;';
@@ -2935,4 +2938,4 @@ async function populateRegionList(listContainer) {
         } 
     } else {
     }
-});
+})})();

@@ -1,3 +1,6 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+
 let checkInterval;
 let currentMode = localStorage.getItem('hiddenCatalogMode') || 'dark';
 
@@ -152,7 +155,7 @@ function removeHiddenCatalogContent() {
             headerContainer.appendChild(header);
 
             const headerIcon = document.createElement('img');
-            headerIcon.src =  chrome.runtime.getURL("Assets/icon-128.png");
+            headerIcon.src =  ext.runtime.getURL("Assets/icon-128.png");
             headerIcon.alt = 'Hidden Catalog Icon';
             headerIcon.style.width = '32px';
             headerIcon.style.height = '32px';
@@ -710,8 +713,8 @@ async function displayItems(itemsWithDetails) {
     fetchThumbnails();
 }
 
-chrome.storage.local.get({ hiddenCatalogEnabled: false }, function(result) {
+ext.storage.local.get({ hiddenCatalogEnabled: false }, function(result) {
     if (result.hiddenCatalogEnabled) {
         initHiddenCatalog();
     }
-});
+})})();

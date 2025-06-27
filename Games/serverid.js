@@ -1,3 +1,6 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+
 var buttonsToMonitor = {};
 
 function checkAndRepositionButtons() {
@@ -44,7 +47,7 @@ function checkAndRepositionButtons() {
 }
 
 var serverIdInterval = setInterval(function () {
-    chrome.storage.local.get(['showfullserveridEnabled', 'inviteEnabled', 'enableFriendservers'], function(result) {
+    ext.storage.local.get(['showfullserveridEnabled', 'inviteEnabled', 'enableFriendservers'], function(result) {
         var showFullId = result.showfullserveridEnabled !== false;
         var inviteEnabled = result.inviteEnabled !== false;
         var enableFriendservers = result.enableFriendservers !== false;
@@ -181,7 +184,7 @@ function processServerElements(selector, showFullId, inviteEnabled, checkPrivate
 function checkIfServerIsPrivate(server, serverId) {
     if (server.hasAttribute('data-rovalra-private-checked')) {
         if (server.getAttribute('data-rovalra-is-private') === 'false') {
-            chrome.storage.local.get(['inviteEnabled', 'enableFriendservers', 'showfullserveridEnabled'], function(result) {
+            ext.storage.local.get(['inviteEnabled', 'enableFriendservers', 'showfullserveridEnabled'], function(result) {
                 var inviteEnabled = result.inviteEnabled !== false;
                 var enableFriendservers = result.enableFriendservers !== false;
                 var showFullId = result.showfullserveridEnabled !== false;
@@ -249,7 +252,7 @@ function checkIfServerIsPrivate(server, serverId) {
         } else {
             server.setAttribute('data-rovalra-is-private', 'false');
             
-            chrome.storage.local.get(['enableFriendservers', 'showfullserveridEnabled'], function(result) {
+            ext.storage.local.get(['enableFriendservers', 'showfullserveridEnabled'], function(result) {
                 var enableFriendservers = result.enableFriendservers !== false;
                 var inviteEnabled = server.getAttribute('data-rovalra-invite-enabled') !== 'false';
                 var showFullId = result.showfullserveridEnabled !== false;
@@ -280,7 +283,7 @@ function createUUID() {
 
 function addPrivateServerLabel(server) {
     if (server.classList.contains('rbx-friends-game-server-item')) {
-        chrome.storage.local.get(['enableFriendservers'], function(result) {
+        ext.storage.local.get(['enableFriendservers'], function(result) {
             var enableFriendservers = result.enableFriendservers !== false;
             if (!enableFriendservers) {
                 return;
@@ -323,7 +326,7 @@ function createAndAddPrivateServerLabel(server) {
 
 function addCopyJoinLinkButton(server, serverId, serverIDTextElement = null) {
     if (server.classList.contains('rbx-friends-game-server-item')) {
-        chrome.storage.local.get(['enableFriendservers'], function(result) {
+        ext.storage.local.get(['enableFriendservers'], function(result) {
             var enableFriendservers = result.enableFriendservers !== false;
             if (enableFriendservers) {
                 createAndAddCopyJoinLinkButton(server, serverId, serverIDTextElement);
@@ -419,7 +422,7 @@ function createAndAddCopyJoinLinkButton(server, serverId, serverIDTextElement = 
                 button.remove();
             });
             
-            chrome.storage.local.get(['enableFriendservers'], function(result) {
+            ext.storage.local.get(['enableFriendservers'], function(result) {
                 var enableFriendservers = result.enableFriendservers !== false;
                 if (enableFriendservers) {
                     var joinButton = detailsElement.querySelector('.game-server-join-btn');
@@ -498,7 +501,7 @@ function createAndAddCopyJoinLinkButton(server, serverId, serverIDTextElement = 
                 button.remove();
             });
             
-            chrome.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
+            ext.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
                 var inviteEnabled = result.inviteEnabled !== false;
                 var enableFriendservers = result.enableFriendservers !== false;
                 
@@ -526,7 +529,7 @@ function cleanupServerUI(server, isDeepClean) {
         addVipServerInviteButton(server, vipServerId);
     }
     
-    chrome.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
+    ext.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
         var inviteEnabled = result.inviteEnabled !== false;
         var enableFriendservers = result.enableFriendservers !== false;
         
@@ -597,7 +600,7 @@ function cleanupServerUI(server, isDeepClean) {
 }
 
 var shareBtnCleanupInterval = setInterval(function() {
-    chrome.storage.local.get(['enableFriendservers', 'inviteEnabled'], function(result) {
+    ext.storage.local.get(['enableFriendservers', 'inviteEnabled'], function(result) {
         var enableFriendservers = result.enableFriendservers !== false;
         var inviteEnabled = result.inviteEnabled !== false;
         
@@ -704,7 +707,7 @@ function setupShareButtonObserver() {
                             }
                         }
                         
-                        chrome.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
+                        ext.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
                             var inviteEnabled = result.inviteEnabled !== false;
                             var enableFriendservers = result.enableFriendservers !== false;
                             
@@ -833,7 +836,7 @@ function addVipServerInviteButton(server, vipServerId) {
             }
 
             if (inviteLinkString) {
-                chrome.storage.local.get(['privateserverlink'], function(result) {
+                ext.storage.local.get(['privateserverlink'], function(result) {
                     if (result.privateserverlink === true) {                        vipStatusCache[vipServerId] = 'success';
                         const initialInviteLink = inviteLinkString;
 
@@ -1041,7 +1044,7 @@ function checkAndRepositionButtons() {
 }
 
 var serverIdInterval = setInterval(function () {
-    chrome.storage.local.get(['showfullserveridEnabled', 'inviteEnabled', 'enableFriendservers'], function(result) {
+    ext.storage.local.get(['showfullserveridEnabled', 'inviteEnabled', 'enableFriendservers'], function(result) {
         var showFullId = result.showfullserveridEnabled !== false;
         var inviteEnabled = result.inviteEnabled !== false;
         var enableFriendservers = result.enableFriendservers !== false;
@@ -1178,7 +1181,7 @@ function processServerElements(selector, showFullId, inviteEnabled, checkPrivate
 function checkIfServerIsPrivate(server, serverId) {
     if (server.hasAttribute('data-rovalra-private-checked')) {
         if (server.getAttribute('data-rovalra-is-private') === 'false') {
-            chrome.storage.local.get(['inviteEnabled', 'enableFriendservers', 'showfullserveridEnabled'], function(result) {
+            ext.storage.local.get(['inviteEnabled', 'enableFriendservers', 'showfullserveridEnabled'], function(result) {
                 var inviteEnabled = result.inviteEnabled !== false;
                 var enableFriendservers = result.enableFriendservers !== false;
                 var showFullId = result.showfullserveridEnabled !== false;
@@ -1246,7 +1249,7 @@ function checkIfServerIsPrivate(server, serverId) {
         } else {
             server.setAttribute('data-rovalra-is-private', 'false');
             
-            chrome.storage.local.get(['enableFriendservers', 'showfullserveridEnabled'], function(result) {
+            ext.storage.local.get(['enableFriendservers', 'showfullserveridEnabled'], function(result) {
                 var enableFriendservers = result.enableFriendservers !== false;
                 var inviteEnabled = server.getAttribute('data-rovalra-invite-enabled') !== 'false';
                 var showFullId = result.showfullserveridEnabled !== false;
@@ -1277,7 +1280,7 @@ function createUUID() {
 
 function addPrivateServerLabel(server) {
     if (server.classList.contains('rbx-friends-game-server-item')) {
-        chrome.storage.local.get(['enableFriendservers'], function(result) {
+        ext.storage.local.get(['enableFriendservers'], function(result) {
             var enableFriendservers = result.enableFriendservers !== false;
             if (!enableFriendservers) {
                 return;
@@ -1320,7 +1323,7 @@ function createAndAddPrivateServerLabel(server) {
 
 function addCopyJoinLinkButton(server, serverId, serverIDTextElement = null) {
     if (server.classList.contains('rbx-friends-game-server-item')) {
-        chrome.storage.local.get(['enableFriendservers'], function(result) {
+        ext.storage.local.get(['enableFriendservers'], function(result) {
             var enableFriendservers = result.enableFriendservers !== false;
             if (enableFriendservers) {
                 createAndAddCopyJoinLinkButton(server, serverId, serverIDTextElement);
@@ -1416,7 +1419,7 @@ function createAndAddCopyJoinLinkButton(server, serverId, serverIDTextElement = 
                 button.remove();
             });
             
-            chrome.storage.local.get(['enableFriendservers'], function(result) {
+            ext.storage.local.get(['enableFriendservers'], function(result) {
                 var enableFriendservers = result.enableFriendservers !== false;
                 if (enableFriendservers) {
                     var joinButton = detailsElement.querySelector('.game-server-join-btn');
@@ -1495,7 +1498,7 @@ function createAndAddCopyJoinLinkButton(server, serverId, serverIDTextElement = 
                 button.remove();
             });
             
-            chrome.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
+            ext.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
                 var inviteEnabled = result.inviteEnabled !== false;
                 var enableFriendservers = result.enableFriendservers !== false;
                 
@@ -1523,7 +1526,7 @@ function cleanupServerUI(server, isDeepClean) {
         addVipServerInviteButton(server, vipServerId);
     }
     
-    chrome.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
+    ext.storage.local.get(['inviteEnabled', 'enableFriendservers'], function(result) {
         var inviteEnabled = result.inviteEnabled !== false;
         var enableFriendservers = result.enableFriendservers !== false;
         
@@ -1594,7 +1597,7 @@ function cleanupServerUI(server, isDeepClean) {
 }
 
 var shareBtnCleanupInterval = setInterval(function() {
-    chrome.storage.local.get(['enableFriendservers', 'inviteEnabled'], function(result) {
+    ext.storage.local.get(['enableFriendservers', 'inviteEnabled'], function(result) {
         var enableFriendservers = result.enableFriendservers !== false;
         var inviteEnabled = result.inviteEnabled !== false;
         
@@ -1664,7 +1667,7 @@ var shareBtnCleanupInterval = setInterval(function() {
 }, 200);
 
 function aggressiveShareButtonRemoval() {
-    chrome.storage.local.get(['showfullserveridEnabled', 'inviteEnabled', 'enableFriendservers'], function(result) {
+    ext.storage.local.get(['showfullserveridEnabled', 'inviteEnabled', 'enableFriendservers'], function(result) {
         var showFullId = result.showfullserveridEnabled !== false;
         var inviteEnabled = result.inviteEnabled !== false;
         var enableFriendservers = result.enableFriendservers !== false;
@@ -1698,3 +1701,4 @@ function aggressiveShareButtonRemoval() {
 
 var aggressiveRemovalInterval = setInterval(aggressiveShareButtonRemoval, 100);
 
+})();

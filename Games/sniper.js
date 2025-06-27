@@ -1,3 +1,5 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
 const REQUEST_LIMIT = 5;
 let requestQueue = [];
 let lastRequestTime = 0;
@@ -953,9 +955,9 @@ function injectButton() {
 async function initialize() {
     let universalSniperEnabled = true; 
     
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+    if (typeof ext !== 'undefined' && ext.storage && ext.storage.local) {
         const settings = await new Promise((resolve) => {
-            chrome.storage.local.get({ universalSniperEnabled: true }, (result) => {
+            ext.storage.local.get({ universalSniperEnabled: true }, (result) => {
                 resolve(result);
             });
         });
@@ -1038,3 +1040,4 @@ function updateThemeStyles(theme) {
 }
 
 initialize()
+})();

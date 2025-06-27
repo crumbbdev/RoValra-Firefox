@@ -1,4 +1,6 @@
-chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+ext.storage.local.get(['PreferredRegionEnabled'], function(result) {
     if (result.PreferredRegionEnabled) {
         if (window.location.pathname.includes('/games/')) {
         if (window.myCustomButtonExtensionInitialized) {
@@ -18,7 +20,7 @@ chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
             const CUSTOM_BUTTON_CLASS = 'my-extension-custom-button';
             const MODAL_ID = 'my-region-selection-modal';
             const PREFERRED_REGION_STORAGE_KEY = 'robloxPreferredRegion';
-            const SERVER_IP_MAP_URL = chrome.runtime.getURL('data/ServerList.json');
+            const SERVER_IP_MAP_URL = ext.runtime.getURL('data/ServerList.json');
             const LOADING_OVERLAY_ID = 'my-extension-loading-overlay';
             const MAX_SERVER_PAGES = 20;            const REGIONS = {
 
@@ -81,7 +83,7 @@ chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
             function createRobloxLogoIMG() {
                 const img = document.createElement('img');
                 try {
-                    const imageUrl = chrome.runtime.getURL("Assets/icon-128.png");
+                    const imageUrl = ext.runtime.getURL("Assets/icon-128.png");
                     if (imageUrl) {
                         img.src = imageUrl;
                         img.alt = "Roblox Logo";
@@ -288,7 +290,7 @@ chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
                     const selectedRegion = select.value;
                     if (selectedRegion && REGIONS[selectedRegion]) {
                         try {
-                            await chrome.storage.local.set({ [PREFERRED_REGION_STORAGE_KEY]: selectedRegion });
+                            await ext.storage.local.set({ [PREFERRED_REGION_STORAGE_KEY]: selectedRegion });
                             if (buttonToUpdate) {
                                 updateButtonTooltip(buttonToUpdate, selectedRegion);
                             }
@@ -969,8 +971,8 @@ chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
                     })();
                 `;
 
-                chrome.runtime.sendMessage({ action: "injectScript", codeToInject: codeToInject }, (response) => {
-                    if (chrome.runtime.lastError) {
+                ext.runtime.sendMessage({ action: "injectScript", codeToInject: codeToInject }, (response) => {
+                    if (ext.runtime.lastError) {
                         alert("Error communicating with the extension's background process. Please try reloading the extension or browser.");
                         return;
                     }
@@ -1133,7 +1135,7 @@ chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
                 newButton.appendChild(tooltipSpan);
 
                 try {
-                    const storageResult = await chrome.storage.local.get(PREFERRED_REGION_STORAGE_KEY);
+                    const storageResult = await ext.storage.local.get(PREFERRED_REGION_STORAGE_KEY);
                     updateButtonTooltip(newButton, storageResult[PREFERRED_REGION_STORAGE_KEY]);
                 } catch (error) {
                     updateButtonTooltip(newButton, null);
@@ -1143,7 +1145,7 @@ chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
                     event.stopPropagation();
                     if (isCurrentlyFetchingData) {  return; }
                     try {
-                        const storageResult = await chrome.storage.local.get(PREFERRED_REGION_STORAGE_KEY);
+                        const storageResult = await ext.storage.local.get(PREFERRED_REGION_STORAGE_KEY);
                         const currentSavedRegion = storageResult[PREFERRED_REGION_STORAGE_KEY];
                         if (currentSavedRegion && REGIONS[currentSavedRegion]) {
                             await performJoinAction(currentSavedRegion);
@@ -1299,4 +1301,4 @@ chrome.storage.local.get(['PreferredRegionEnabled'], function(result) {
         const existingButton = document.getElementById(newButtonId);
         if (existingButton) existingButton.remove();
     }
-}});
+}})})();

@@ -4,14 +4,16 @@
         return url.includes("/users/") && (url.includes("/profile") || url.includes("/inventory"));
     }
     
+    const ext = (typeof browser !== "undefined") ? browser : chrome;
+
     const checkStorageAndRun = async () => {
         if (!isOnSupportedPage()) {
             return;
         }
-        
+
         try {
-            if (typeof chrome !== 'undefined' && chrome.storage) {
-                chrome.storage.local.get(['privateInventoryEnabled'], function(result) {
+            if (ext && ext.storage && ext.storage.local) {
+                ext.storage.local.get(['privateInventoryEnabled'], function(result) {
                     if (result.privateInventoryEnabled === true) {
                         initializeScript();
                     }

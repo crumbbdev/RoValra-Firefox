@@ -1,3 +1,6 @@
+(function() {
+const ext = (typeof browser !== "undefined") ? browser : chrome;
+
 const MAX_SERVERS_TO_CHECK = 50;
 const BOT_PERCENTAGE_THRESHOLD = 10;
 const SIMILARITY_THRESHOLD = 5;
@@ -448,9 +451,14 @@ class BotDetector {
 window.BotDetector = BotDetector;
 
 if (window.location.href.includes('/games/')) {
-    chrome.storage.local.get({ botdataEnabled: false }, function(settings) {
-        if (settings.botdataEnabled) {
-            window.botDetector = new BotDetector();
-        }
-    });
-}
+    if (ext && ext.storage && ext.storage.local) {
+        ext.storage.local.get({ botdataEnabled: false }, function(settings) {
+            if (settings.botdataEnabled) {
+                window.botDetector = new BotDetector();
+            }
+        });
+    } else {
+        // fallback if extension storage is not available
+        window.botDetector = new BotDetector();
+    }
+}})();

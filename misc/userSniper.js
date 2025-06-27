@@ -1,6 +1,8 @@
 if (window.location.pathname.includes('/users/')) {
     (function() {
 
+        const ext = (typeof browser !== "undefined") ? browser : chrome;
+
         let isRunning = false;
         let intervalId;
         let isRateLimited = false;
@@ -80,22 +82,18 @@ if (window.location.pathname.includes('/users/')) {
         }
 
         function enableForcedHeaders() {
-            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
-                 chrome.runtime.sendMessage({ action: "enableServerJoinHeaders" }, (response) => {
-                        if (response) {
-                        } else {
-                        }
-                    });
-                }
+            if (ext && ext.runtime && ext.runtime.sendMessage) {
+                ext.runtime.sendMessage({ action: "enableServerJoinHeaders" }, (response) => {
+                    // ...existing code...
+                });
+            }
         }
         function disableForcedHeaders() {
-               if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
-                   chrome.runtime.sendMessage({ action: "disableServerJoinHeaders" }, (response) => {
-                        if (response) {
-                        } else {
-                        }
-                    });
-                }
+            if (ext && ext.runtime && ext.runtime.sendMessage) {
+                ext.runtime.sendMessage({ action: "disableServerJoinHeaders" }, (response) => {
+                    // ...existing code...
+                });
+            }
         }
        function stopPresenceCheck() {
             disableForcedHeaders();
@@ -311,37 +309,34 @@ if (window.location.pathname.includes('/users/')) {
     }
     function applyUserSniper(){
         const observer = new MutationObserver(mutations => {
-        if (window.location.pathname.includes('/users/')) {
-              const userId = window.location.pathname.split('/')[2];
+            if (window.location.pathname.includes('/users/')) {
+                const userId = window.location.pathname.split('/')[2];
 
-              if (userId) {
-                     const targetButton = document.querySelector('.btn.btn-secondary.btn-more.follow-button.text-label.ng-binding.ng-scope');
-                        if(targetButton && !targetButton.dataset.sniper){
-                            targetButton.dataset.sniper = "true";
-                           targetButton.addEventListener('click', function () {
-                                if (targetButton.textContent.trim() === "Unfollow") {
-                                     chrome.runtime.sendMessage({ action: "disableUserSniper" }, (response) => {
-                                            if (chrome.runtime.lastError) {
-                                          } else {
-                                            }
-                                     });
-                                } else {
-                                       chrome.runtime.sendMessage({ action: "enableUserSniper" }, (response) => {
-                                              if (chrome.runtime.lastError) {
-                                                }
-                                                else
-                                                {
-                                                }
-                                       });
-                                }
-                            });
-                        }
-                  }
-             }
-         });
+                if (userId) {
+                    const targetButton = document.querySelector('.btn.btn-secondary.btn-more.follow-button.text-label.ng-binding.ng-scope');
+                    if(targetButton && !targetButton.dataset.sniper){
+                        targetButton.dataset.sniper = "true";
+                        targetButton.addEventListener('click', function () {
+                            if (targetButton.textContent.trim() === "Unfollow") {
+                                ext.runtime.sendMessage({ action: "disableUserSniper" }, (response) => {
+                                    if (ext.runtime.lastError) {
+                                    } else {
+                                    }
+                                });
+                            } else {
+                                ext.runtime.sendMessage({ action: "enableUserSniper" }, (response) => {
+                                    if (ext.runtime.lastError) {
+                                    } else {
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
-          observer.observe(document.body, { childList: true, subtree: true });
-
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     applyUserSniper();
